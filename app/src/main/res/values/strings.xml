@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NotesApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_note">Сохранить заметку</string>
+    <string name="titile">Заголовок</string>
+    <string name="note_body">Текст заметки</string>
+    <string name="add_img_note">Добавить вложение</string>
+    <string name="create_note">Создать заметку</string>
+</resources>
