@@ -9,11 +9,17 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.raiffeisen.notesapp.model.Note
 import ru.raiffeisen.notesapp.repository.NoteRepository
+import ru.raiffeisen.notesapp.state.NotesFragmentState
 
-class NoteFragmentViewModel : ViewModel() {
+class NoteFragmentViewModel : BaseViewModel() {
+
+    private val innerState: MutableLiveData<NotesFragmentState> = MutableLiveData(
+        NotesFragmentState.NotesLoadedState(listOf())
+    )
+    val state: LiveData<NotesFragmentState> = innerState
+
     private var _noteAllLiveData = MutableLiveData<List<Note>>()
     var noteAllLiveData: LiveData<List<Note>> = _noteAllLiveData
-    private var compositeDisposable = CompositeDisposable()
 
     init {
         getAllNotes()
@@ -25,17 +31,13 @@ class NoteFragmentViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 _noteAllLiveData.value = result
+                innerState.value = NotesFragmentState.NotesLoadedState(result)
             }, { error -> Log.d("Error", error.message!!) })
+            .autoDispose()
 
-        compositeDisposable.add(allNoteList)
     }
 
     fun deleteNote(note: Note) {
         NoteRepository().deleteNote(note)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
     }
 }

@@ -18,6 +18,7 @@ import ru.raiffeisen.notesapp.R
 import ru.raiffeisen.notesapp.helper.SwipeTouchCallback
 import ru.raiffeisen.notesapp.item.NoteItem
 import ru.raiffeisen.notesapp.model.Note
+import ru.raiffeisen.notesapp.state.NotesFragmentState
 import ru.raiffeisen.notesapp.view_model.NoteFragmentViewModel
 
 class NoteFragment : BaseFragment<NoteFragmentViewModel>() {
@@ -74,18 +75,24 @@ class NoteFragment : BaseFragment<NoteFragmentViewModel>() {
     }
 
     override fun observeLiveData() {
-        viewModel.noteAllLiveData.observe(this, Observer { notes ->
-            if (notes.size - section.itemCount == 1) {
-                section.add(NoteItem(notes[notes.size - 1]))
-                notesMutableList.add(notes[notes.size - 1])
-            } else {
-                notes.forEach {
-                    section.add(NoteItem(it))
-                    notesMutableList.add(it)
-                }
+        viewModel.state.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NotesFragmentState.NotesLoadedState -> handleSuccess(it.notes)
+            }
+        })
+    }
+
+    private fun handleSuccess(notes: List<Note>) {
+        if (notes.size - section.itemCount == 1) {
+            section.add(NoteItem(notes[notes.size - 1]))
+            notesMutableList.add(notes[notes.size - 1])
+        } else {
+            notes.forEach {
+                section.add(NoteItem(it))
+                notesMutableList.add(it)
             }
         }
-        )
+        swipeRefresh.isRefreshing = false
     }
 
     private val touchCallback: SwipeTouchCallback by lazy {

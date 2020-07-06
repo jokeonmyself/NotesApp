@@ -56,7 +56,7 @@ class NoteEditFragment : Fragment() {
                 viewModel.editNoteButtonClick(note)
             }
         }
-        fragmentManager?.popBackStackImmediate()
+        childFragmentManager.popBackStackImmediate()
         return super.onOptionsItemSelected(item)
     }
 
@@ -72,7 +72,7 @@ class NoteEditFragment : Fragment() {
 
         requireActivity().toolbarMainActivity.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
         requireActivity().toolbarMainActivity.setNavigationOnClickListener {
-            fragmentManager?.popBackStackImmediate()
+            childFragmentManager.popBackStackImmediate()
         }
 
         addResButton.setOnClickListener {
