@@ -1,13 +1,13 @@
 package ru.raiffeisen.notesapp.fragment
 
-import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.view.*
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_note_update.*
 import ru.raiffeisen.notesapp.R
@@ -17,29 +17,45 @@ import ru.raiffeisen.notesapp.state.NoteEditFragmentState
 import ru.raiffeisen.notesapp.view_model.NoteEditFragmentViewModel
 import kotlin.properties.Delegates
 
-class NoteEditFragment : Fragment() {
+class NoteEditFragment : BaseFragment<NoteEditFragmentViewModel>() {
 
-    private var note = Note(_id = null, noteTitle = "", noteBody = "", notePicLink = "")
-    private val viewModel by createViewModel()
+    companion object {
+        const val KEY = "Note"
+    }
+
     private var db: SQLiteDatabase by Delegates.notNull()
     private var dbHelper: NoteDbHelper by Delegates.notNull()
 
-    companion object {
-        const val REQUEST_IMAGE_CAPTURE = 1
+    override fun createViewModel(): Lazy<NoteEditFragmentViewModel> = lazy {
+        ViewModelProvider.NewInstanceFactory().create(NoteEditFragmentViewModel::class.java)
     }
 
-    private fun createViewModel() =
-        lazy { ViewModelProviders.of(this).get(NoteEditFragmentViewModel::class.java) }
+    override var layoutId: Int = R.layout.fragment_note_update
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        observeLiveData()
-        dbHelper = NoteDbHelper(requireContext())
-        db = dbHelper.writableDatabase
-        setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_note_update, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        this.arguments.let {
+            viewModel.getNote(it?.getParcelable(KEY))
+        }
+
+        requireActivity().toolbarMainActivity.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
+        this.setMenuVisibility(false)
+        setupDatabaseHelper()
+        setupListeners()
+    }
+
+    override fun observeLiveData() {
+        viewModel.state.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is NoteEditFragmentState.EditNoteState -> {
+                    titleEditText.setText(it.note?.noteTitle)
+                    bodyEditText.setText(it.note?.noteBody)
+                }
+                is NoteEditFragmentState.SuccessState -> {
+                    this.setMenuVisibility(false)
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -51,67 +67,26 @@ class NoteEditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_save_note -> {
-                note.noteTitle = titleEditText.text.toString()
-                note.noteBody = bodyEditText.text.toString()
-                viewModel.editNoteButtonClick(note)
+                val newNote = Note(
+                    _id = null,
+                    noteTitle = titleEditText.text.toString(),
+                    noteBody = bodyEditText.text.toString()
+                )
+                viewModel.editNoteButtonClick(newNote)
             }
         }
         childFragmentManager.popBackStackImmediate()
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val bundle = this.arguments
-        if (bundle != null) {
-            val bundleNote: Note? = bundle.getParcelable("Note")
-            if (bundleNote != null)
-                note = bundleNote
-        }
-        viewModel.fragmentInit(note)
+    private fun setupDatabaseHelper() {
+        dbHelper = NoteDbHelper(requireContext())
+        db = dbHelper.writableDatabase
+    }
 
-        requireActivity().toolbarMainActivity.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp)
+    private fun setupListeners() {
         requireActivity().toolbarMainActivity.setNavigationOnClickListener {
             childFragmentManager.popBackStackImmediate()
-        }
-
-        addResButton.setOnClickListener {
-            note.noteTitle = titleEditText.text.toString()
-            note.noteBody = bodyEditText.text.toString()
-            viewModel.editNoteButtonClick(note)
-        }
-        addResButton.setOnClickListener {
-            viewModel.addImageButtonClick(REQUEST_IMAGE_CAPTURE)
-        }
-    }
-
-    private fun observeLiveData() {
-        viewModel.noteStateLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is NoteEditFragmentState.EditNoteState -> {
-                    titleEditText.setText(it.note.noteTitle)
-                    bodyEditText.setText(it.note.noteBody)
-                    linkTextView.isVisible = true
-                    linkTextView.visibility = View.VISIBLE
-                    linkTextView.text = it.note.notePicLink
-                    addResButton.isVisible = false
-                }
-            }
-        })
-        viewModel.requestImageCapture.observe(viewLifecycleOwner, Observer {
-            val intent = Intent(Intent.ACTION_GET_CONTENT)
-            intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Select picture"), it)
-        })
-        viewModel.linkLiveData.observe(viewLifecycleOwner, Observer {
-            note.notePicLink = it.path
-        })
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            viewModel.imageSaveActivityResultStart(data?.data)
         }
     }
 }

@@ -7,6 +7,5 @@ import kotlinx.android.parcel.Parcelize
 data class Note(
     val _id: Int?,
     var noteTitle: String,
-    var noteBody: String,
-    var notePicLink: String?
+    var noteBody: String
 ) : Parcelable

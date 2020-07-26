@@ -18,23 +18,18 @@ class NoteFragmentViewModel : BaseViewModel() {
     )
     val state: LiveData<NotesFragmentState> = innerState
 
-    private var _noteAllLiveData = MutableLiveData<List<Note>>()
-    var noteAllLiveData: LiveData<List<Note>> = _noteAllLiveData
-
     init {
         getAllNotes()
     }
 
     fun getAllNotes() {
-        val allNoteList = NoteRepository().getAllNotes()
+        NoteRepository().getAllNotes()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
-                _noteAllLiveData.value = result
                 innerState.value = NotesFragmentState.NotesLoadedState(result)
             }, { error -> Log.d("Error", error.message!!) })
             .autoDispose()
-
     }
 
     fun deleteNote(note: Note) {
