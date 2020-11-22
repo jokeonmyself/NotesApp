@@ -1,12 +1,12 @@
-package ru.raiffeisen.notesapp.db.helper
+package ru.raiffeisen.notesapp.data.db.helper
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_BODY
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_ID
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_TITLE
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.TABLE_NAME
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_BODY
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_ID
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_TITLE
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.TABLE_NAME
 
 class NoteDbHelper(context: Context) : SQLiteOpenHelper(context, "noteapp.db", null, 1) {
 

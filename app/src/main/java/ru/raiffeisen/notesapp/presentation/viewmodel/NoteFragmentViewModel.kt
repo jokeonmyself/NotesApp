@@ -1,15 +1,13 @@
-package ru.raiffeisen.notesapp.view_model
+package ru.raiffeisen.notesapp.presentation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import ru.raiffeisen.notesapp.model.Note
-import ru.raiffeisen.notesapp.repository.NoteRepository
-import ru.raiffeisen.notesapp.state.NotesFragmentState
+import ru.raiffeisen.notesapp.data.model.Note
+import ru.raiffeisen.notesapp.data.repository.NoteRepository
+import ru.raiffeisen.notesapp.presentation.state.NotesFragmentState
 
 class NoteFragmentViewModel : BaseViewModel() {
 

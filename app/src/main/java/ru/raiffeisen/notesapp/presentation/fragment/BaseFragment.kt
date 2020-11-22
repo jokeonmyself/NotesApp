@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.fragment
+package ru.raiffeisen.notesapp.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp
+package ru.raiffeisen.notesapp.presentation
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -7,7 +7,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.raiffeisen.notesapp.fragment.NoteFragment
+import ru.raiffeisen.notesapp.R
+import ru.raiffeisen.notesapp.presentation.fragment.NoteFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, NoteFragment()).commit()
-        setSupportActionBar(toolbarMainActivity)
+//        setSupportActionBar(toolbarMainActivity)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

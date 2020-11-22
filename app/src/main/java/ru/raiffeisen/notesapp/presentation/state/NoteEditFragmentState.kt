@@ -1,6 +1,6 @@
-package ru.raiffeisen.notesapp.state
+package ru.raiffeisen.notesapp.presentation.state
 
-import ru.raiffeisen.notesapp.model.Note
+import ru.raiffeisen.notesapp.data.model.Note
 
 sealed class NoteEditFragmentState {
     object CreateNoteState: NoteEditFragmentState()

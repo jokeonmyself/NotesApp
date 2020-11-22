@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.helper
+package ru.raiffeisen.notesapp.data.helper
 
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.TouchCallback

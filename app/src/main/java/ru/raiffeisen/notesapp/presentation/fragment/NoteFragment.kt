@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.fragment
+package ru.raiffeisen.notesapp.presentation.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -15,11 +15,11 @@ import com.xwray.groupie.Section
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_notes.*
 import ru.raiffeisen.notesapp.R
-import ru.raiffeisen.notesapp.helper.SwipeTouchCallback
-import ru.raiffeisen.notesapp.item.NoteItem
-import ru.raiffeisen.notesapp.model.Note
-import ru.raiffeisen.notesapp.state.NotesFragmentState
-import ru.raiffeisen.notesapp.view_model.NoteFragmentViewModel
+import ru.raiffeisen.notesapp.data.helper.SwipeTouchCallback
+import ru.raiffeisen.notesapp.presentation.item.NoteItem
+import ru.raiffeisen.notesapp.data.model.Note
+import ru.raiffeisen.notesapp.presentation.state.NotesFragmentState
+import ru.raiffeisen.notesapp.presentation.viewmodel.NoteFragmentViewModel
 
 class NoteFragment : BaseFragment<NoteFragmentViewModel>() {
 
@@ -39,7 +39,6 @@ class NoteFragment : BaseFragment<NoteFragmentViewModel>() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         notesRecycler.layoutManager = linearLayoutManager
         notesRecycler.adapter = adapter
-        requireActivity().toolbarMainActivity.navigationIcon = null
 
         adapter.setOnItemClickListener(onNoteClickListener())
 
@@ -83,14 +82,10 @@ class NoteFragment : BaseFragment<NoteFragmentViewModel>() {
     }
 
     private fun handleSuccess(notes: List<Note>) {
-        if (notes.size - section.itemCount == 1) {
-            section.add(NoteItem(notes[notes.size - 1]))
-            notesMutableList.add(notes[notes.size - 1])
-        } else {
-            notes.forEach {
-                section.add(NoteItem(it))
-                notesMutableList.add(it)
-            }
+        section.clear()
+        notes.forEach {
+            section.add(NoteItem(it))
+            notesMutableList.add(it)
         }
         swipeRefresh.isRefreshing = false
     }
