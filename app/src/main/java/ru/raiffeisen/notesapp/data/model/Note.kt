@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.model
+package ru.raiffeisen.notesapp.data.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

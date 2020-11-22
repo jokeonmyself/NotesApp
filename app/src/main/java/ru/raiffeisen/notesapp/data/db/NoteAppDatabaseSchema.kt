@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.db
+package ru.raiffeisen.notesapp.data.db
 
 class NoteAppDatabaseSchema {
     class NotesTable {

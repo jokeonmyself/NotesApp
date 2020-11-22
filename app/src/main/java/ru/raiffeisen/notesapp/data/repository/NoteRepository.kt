@@ -1,15 +1,15 @@
-package ru.raiffeisen.notesapp.repository
+package ru.raiffeisen.notesapp.data.repository
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import io.reactivex.Single
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_BODY
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_ID
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_TITLE
-import ru.raiffeisen.notesapp.db.NoteAppDatabaseSchema.NotesTable.Companion.TABLE_NAME
-import ru.raiffeisen.notesapp.db.helper.NoteDbHelper
-import ru.raiffeisen.notesapp.helper.App
-import ru.raiffeisen.notesapp.model.Note
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_BODY
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_ID
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.COLUMN_TITLE
+import ru.raiffeisen.notesapp.data.db.NoteAppDatabaseSchema.NotesTable.Companion.TABLE_NAME
+import ru.raiffeisen.notesapp.data.db.helper.NoteDbHelper
+import ru.raiffeisen.notesapp.data.helper.App
+import ru.raiffeisen.notesapp.data.model.Note
 import kotlin.properties.Delegates
 
 class NoteRepository {

@@ -1,11 +1,11 @@
-package ru.raiffeisen.notesapp.item
+package ru.raiffeisen.notesapp.presentation.item
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.note_item.view.*
 import ru.raiffeisen.notesapp.R
-import ru.raiffeisen.notesapp.model.Note
+import ru.raiffeisen.notesapp.data.model.Note
 
 class NoteItem(val note: Note): Item() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {

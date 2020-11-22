@@ -1,4 +1,4 @@
-package ru.raiffeisen.notesapp.view_model
+package ru.raiffeisen.notesapp.presentation.viewmodel
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
